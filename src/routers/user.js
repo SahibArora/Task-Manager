@@ -1,3 +1,4 @@
+const path = require('path')
 const express = require('express')
 const userRouter = new express.Router()
 
@@ -6,9 +7,12 @@ const auth = require('../middleware/auth')
 
 const multer = require('multer')
 
-userPost.get('/user')
+userRouter.get('/addUser',(req, res) => {
+    res.sendFile(path.join(__dirname,'../html/addUser.html'))
+})
 
 userRouter.post('/user', async (req, res) => {
+    console.log(req.body)
     const user = new User(req.body)
 
     try {
