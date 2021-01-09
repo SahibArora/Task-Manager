@@ -6,7 +6,9 @@ const auth = require('../middleware/auth')
 
 const multer = require('multer')
 
-userRouter.post('/users', async (req, res) => {
+userPost.get('/user')
+
+userRouter.post('/user', async (req, res) => {
     const user = new User(req.body)
 
     try {
@@ -18,7 +20,7 @@ userRouter.post('/users', async (req, res) => {
     }
 })
 
-userRouter.post('/users/login', async (req, res) => {
+userRouter.post('/user/login', async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password)
         const token = await user.generateAuthToken()
@@ -28,7 +30,7 @@ userRouter.post('/users/login', async (req, res) => {
     }
 })
 
-userRouter.post('/users/logout', auth, async (req, res) => {
+userRouter.post('/user/logout', auth, async (req, res) => {
     try {
         req.user.tokens = req.user.tokens.filter((token) => {
             return token.token !== req.token
@@ -41,7 +43,7 @@ userRouter.post('/users/logout', auth, async (req, res) => {
     }
 })
 
-userRouter.post('/users/logoutAll', auth, async (req, res) => {
+userRouter.post('/user/logoutAll', auth, async (req, res) => {
     try {
         req.user.tokens = []
         await req.user.save()
@@ -51,11 +53,11 @@ userRouter.post('/users/logoutAll', auth, async (req, res) => {
     }
 })
 
-userRouter.get('/users/me', auth, async (req, res) => {
+userRouter.get('/user/me', auth, async (req, res) => {
     res.send(req.user)
 })
 
-userRouter.patch('/users/me', auth, async (req, res) => {
+userRouter.patch('/user/me', auth, async (req, res) => {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['name', 'email', 'password', 'age']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
@@ -101,7 +103,7 @@ const avatar = multer({
     }
 })
 
-userRouter.post('/users/me/avatar', auth, avatar.single('avatar'), async (req,res) => {
+userRouter.post('/user/me/avatar', auth, avatar.single('avatar'), async (req,res) => {
     // req.file.buffer, holds the binary data for profile picture 
 
     req.user.avatar = req.file.buffer
@@ -112,14 +114,14 @@ userRouter.post('/users/me/avatar', auth, avatar.single('avatar'), async (req,re
     res.status(400).send({error: error.message})
 })
 
-userRouter.delete('/users/me/avatar', auth, async (req, res) => {
+userRouter.delete('/user/me/avatar', auth, async (req, res) => {
     req.user.avatar = undefined
     await req.user.save()
 
     res.status(200).send("Your Avatar is now deleted")
 })
 
-userRouter.delete('/users/me', auth, async (req, res) => {
+userRouter.delete('/user/me', auth, async (req, res) => {
     try {
         await req.user.remove()
         res.send(req.user)
@@ -128,7 +130,7 @@ userRouter.delete('/users/me', auth, async (req, res) => {
     }
 })
 
-userRouter.get('/users/:id/avatar', async (req, res) => {
+userRouter.get('/user/:id/avatar', async (req, res) => {
     try{
         const user = await User.findById(req.params.id)
 
