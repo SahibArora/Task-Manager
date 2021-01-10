@@ -47,14 +47,6 @@ userRouter.post('/user/login', async (req, res) => {
     }
 })
 
-userRouter.get('/user/logout', (req,res) => {
-    try{
-        res.sendFile(path.join(__dirname,'../html/logout.html'))
-    }catch(e){
-        res.status(500).send(e)
-    }
-})
-
 userRouter.post('/user/logout', auth, async (req, res) => {
     try {
         req.user.tokens = req.user.tokens.filter((token) => {
@@ -65,14 +57,6 @@ userRouter.post('/user/logout', auth, async (req, res) => {
         res.render('login',{})
     } catch (e) {
         res.status(500).send()
-    }
-})
-
-userRouter.get('/user/logoutAll', (req,res)=>{
-    try{
-        res.sendFile(path.join(__dirname,'../html/logoutAll.html'))
-    }catch(e){
-        res.status(500).send(e)
     }
 })
 
@@ -110,7 +94,7 @@ userRouter.patch('/user/update', auth, async (req, res) => {
     try {
         updates.forEach((update) => req.body[update] == "" ? null :req.user[update] = req.body[update])
         await req.user.save()
-        res.render('welcomeUser',{})
+        res.render('welcomeUser',req.user)
     } catch (e) {
         res.status(400).send(e)
     }
@@ -176,14 +160,6 @@ userRouter.delete('/user/me/avatar', auth, async (req, res) => {
     await req.user.save()
 
     res.status(200).send("Your Avatar is now deleted")
-})
-
-userRouter.get('/user/delete', (req,res)=>{
-    try{
-        res.sendFile(path.join(__dirname,'../html/deleteUser.html'))
-    }catch(e){
-        res.status(500).send(e)
-    }
 })
 
 userRouter.delete('/user/delete', auth, async (req, res) => {

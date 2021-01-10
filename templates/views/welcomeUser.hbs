@@ -19,7 +19,6 @@
                     dataType    : 'json', // what type of data do we expect back from the server
                     encode          : true
                 }).done(function(data) {  
-                    alert('User is now deleted!')
                     // using the done promise callback
                 });
             });
@@ -84,18 +83,17 @@ button:hover, a:hover {
                         </div>
                         <div>
                             <form action='/user/logout' method='post'>
-                                <fieldset>  
-                                <br>
-                                <input type='submit' value="Logout" />
-                                </fieldset>
+                                <button><input style='color:black' type='submit' value="Logout" /></button>
                             </form>
                             <form action='/user/logoutall' method='post'>
-                                <fieldset>  
-                                <br>
-                                <input type='submit' value="Logout Everywhere" />
-                                </fieldset>
+                                <button><input style='color:black' type='submit' value="Logout Everywhere" /></button>
                             </form>
-                            <mark><button id='delete'>Delete User</button></mark>
+                            
+                            <button onclick="window.location.href='/user/update'">Update User</button>
+                            <br>
+                            <button id='delete'>Delete User</button>
+                            <mark>Please click on this link to check, if the user is deleted or not (bug) - </mark>
+                            <a href='/user/login'>User Deleted or Not!</a>
                         </div>
                     </td>
                 </tr>
