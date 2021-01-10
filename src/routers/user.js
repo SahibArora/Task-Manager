@@ -9,7 +9,7 @@ const multer = require('multer')
 
 userRouter.get('/user/add',(req, res) => {
     try{
-        res.sendFile(path.join(__dirname,'../html/addUser.html'))
+        res.render('addUser',{})
     }catch(e){
         res.status(500).send({error: 'Something went wrong!'})
     }
@@ -22,8 +22,7 @@ userRouter.post('/user', async (req, res) => {
         await user.save()
         const token = await user.generateAuthToken()
         res.cookie('token', token)
-        //res.redirect('/user/me')
-        res.status(201).send({ user, token })
+        res.render('welcomeUser', user)
     } catch (e) {
         res.status(500).send(e)
     }
@@ -31,7 +30,7 @@ userRouter.post('/user', async (req, res) => {
 
 userRouter.get('/user/login', (req,res) => {
     try{
-        res.sendFile(path.join(__dirname,'../html/login.html'))
+        res.render('login',{})
     }catch(e){
         res.status(500).send(e)
     }
@@ -42,7 +41,7 @@ userRouter.post('/user/login', async (req, res) => {
         const user = await User.findByCredentials(req.body.email, req.body.password)
         const token = await user.generateAuthToken()
         res.cookie('token', token)
-        res.send({ user, token })
+        res.render('welcomeUser', user)
     } catch (e) {
         res.status(400).send({Error: "Error"})
     }
@@ -63,7 +62,7 @@ userRouter.post('/user/logout', auth, async (req, res) => {
         })
         await req.user.save()
 
-        res.send('You are now logged out!')
+        res.render('login',{})
     } catch (e) {
         res.status(500).send()
     }
@@ -81,19 +80,19 @@ userRouter.post('/user/logoutAll', auth, async (req, res) => {
     try {
         req.user.tokens = []
         await req.user.save()
-        res.send('User is logged out from all the devices!')
+        res.render('login',{})
     } catch (e) {
         res.status(500).send()
     }
 })
 
 userRouter.get('/user/me', auth, async (req, res) => {
-    res.send(req.user)
+    res.render('welcomeUser',req.user)
 })
 
-userRouter.get('/user/update', (req,res)=>{
+userRouter.get('/user/update', auth, (req,res)=>{
     try{
-        res.sendFile(path.join(__dirname,'../html/updateUser.html'))
+        res.render('updateUser',req.user)
     }catch(e){
         res.status(500).send(e)
     }
@@ -111,7 +110,7 @@ userRouter.patch('/user/update', auth, async (req, res) => {
     try {
         updates.forEach((update) => req.body[update] == "" ? null :req.user[update] = req.body[update])
         await req.user.save()
-        res.send()
+        res.render('welcomeUser',{})
     } catch (e) {
         res.status(400).send(e)
     }
@@ -190,7 +189,7 @@ userRouter.get('/user/delete', (req,res)=>{
 userRouter.delete('/user/delete', auth, async (req, res) => {
     try {
         await req.user.remove()
-        res.send(req.user)
+        res.render('login',{})
     } catch (e) {
         res.status(500).send()
     }

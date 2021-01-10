@@ -1,0 +1,104 @@
+<html>
+    <head>
+        <title>
+            Welcome {{name}}
+        </title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script>
+            $(document).ready(function() {
+
+            $('#delete').click(function() {
+
+                $.ajax({
+                    type        : 'DELETE', // define the type of HTTP verb we want to use
+                    url         : '/user/delete', // the url where we want to PATCH
+                    data        : undefined, // our data object
+                    dataType    : 'json', // what type of data do we expect back from the server
+                    encode          : true
+                }).done(function(data) {  
+                    alert('User is now deleted!')
+                    // using the done promise callback
+                });
+            });
+            });
+        </script>
+        <style>
+            .card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  margin: auto;
+  text-align: center;
+}
+
+.title {
+  color: grey;
+  font-size: 18px;
+}
+
+button {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+a {
+  text-decoration: none;
+  font-size: 22px;
+  color: black;
+}
+
+button:hover, a:hover {
+  opacity: 0.7;
+}
+
+        </style>
+    </head>
+    <body>
+            <div class="container">
+            <div class="page-header">
+                <h1>User Profile</h1>      
+            </div>      
+            </div>
+            <table align="center">
+                <tr>
+                    <td>
+                        <div class="card" >
+                        <h1>{{name}}</h1>
+                        <p class="title">{{email}}</p>
+                        <p>{{age}} years old</p>
+                        <a href="#"><i class="fa fa-dribbble"></i></a>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                        <a href="#"><i class="fa fa-linkedin"></i></a>
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <p><button>Contact</button></p>
+                        </div>
+                        <div>
+                            <form action='/user/logout' method='post'>
+                                <fieldset>  
+                                <br>
+                                <input type='submit' value="Logout" />
+                                </fieldset>
+                            </form>
+                            <form action='/user/logoutall' method='post'>
+                                <fieldset>  
+                                <br>
+                                <input type='submit' value="Logout Everywhere" />
+                                </fieldset>
+                            </form>
+                            <mark><button id='delete'>Delete User</button></mark>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+    </body>
+</html>
