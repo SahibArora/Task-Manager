@@ -1,3 +1,5 @@
+const path = require('path')
+
 const express = require('express');
 const app = express();
 require('./db/mongoose')
@@ -17,7 +19,7 @@ app.use(userRouter)
 app.use(taskRouter)
 
 app.get('/', (req,res)=>{
-    res.send("<h1>Welcome to Task-Manager App</h1>")
+    res.sendFile(path.join(__dirname,'index.html'))
 })
 
 app.listen(port,()=>{

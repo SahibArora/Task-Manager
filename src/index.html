@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <title>
+            Task Manager API
+        </title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                
+            })
+        </script>
+    </head>
+    <body>
+
+        <div class="jumbotron">
+            <h1>Welcome to Task Manager API</h1>
+            <h5>An easy way to manage your daily Tasks!</h5>
+        </div>
+        <div id="login">  
+            <table class='.table-bordered' align="center" margin-bottom='10px'>
+                <tr><td> <h4>Lets get you started..</h4></td></tr>
+                <tr>
+                    <td><br><button class="btn btn-primary" onclick="window.location.href='/user/add'">Sign-up</button></td>
+                    <td><br><button class="btn btn-success" onclick="window.location.href='/user/login'">Login</button></td>
+                </tr>
+                <tr>
+                    <td><br></td>
+                </tr>
+            </table>
+        </div>
+        <div class="jumbotron" style="margin-top:'10px'">
+            <h2>This API is secured via Web Token Authorization</h2>
+            <h4>Highly secured method to manage yourself!</h4>
+        </div>
+    </body>
+</html>

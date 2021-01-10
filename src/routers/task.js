@@ -4,7 +4,15 @@ const auth = require('../middleware/auth')
 const taskRouter = new express.Router()
 
 
-taskRouter.post('/tasks', auth, async (req,res)=>{
+/*taskRouter.get('/task/add', (req, res) => {
+    try{
+        res.sendFile(path.join(__dirname,'../html/deleteUser.html'))
+    }catch(e){
+        res.status(500).send(e)
+    }
+})*/
+
+taskRouter.post('/task/add', auth, async (req,res)=>{
 
     // ------------ UPDATED TO USE ASYNC AND AWAIT
 
@@ -111,6 +119,14 @@ taskRouter.get('/tasks/:id', auth, async (req,res)=>{
         res.status(500).send()
     })
 */
+})
+
+taskRouter.get('/task/add', (req, res) => {
+    try{
+        res.sendFile(path.join(__dirname,'../html/deleteUser.html'))
+    }catch(e){
+        res.status(500).send(e)
+    }
 })
 
 taskRouter.patch('/tasks/:id', auth, async (req,res)=>{

@@ -7,7 +7,7 @@ const auth = require('../middleware/auth')
 
 const multer = require('multer')
 
-userRouter.get('/addUser',(req, res) => {
+userRouter.get('/user/add',(req, res) => {
     try{
         res.sendFile(path.join(__dirname,'../html/addUser.html'))
     }catch(e){
@@ -31,7 +31,7 @@ userRouter.post('/user', async (req, res) => {
 
 userRouter.get('/user/login', (req,res) => {
     try{
-
+        res.sendFile(path.join(__dirname,'../html/login.html'))
     }catch(e){
         res.status(500).send(e)
     }
@@ -41,15 +41,16 @@ userRouter.post('/user/login', async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password)
         const token = await user.generateAuthToken()
+        res.cookie('token', token)
         res.send({ user, token })
     } catch (e) {
-        res.status(400).send()
+        res.status(400).send({Error: "Error"})
     }
 })
 
 userRouter.get('/user/logout', (req,res) => {
     try{
-
+        res.sendFile(path.join(__dirname,'../html/logout.html'))
     }catch(e){
         res.status(500).send(e)
     }
@@ -62,7 +63,7 @@ userRouter.post('/user/logout', auth, async (req, res) => {
         })
         await req.user.save()
 
-        res.send()
+        res.send('You are now logged out!')
     } catch (e) {
         res.status(500).send()
     }
@@ -70,7 +71,7 @@ userRouter.post('/user/logout', auth, async (req, res) => {
 
 userRouter.get('/user/logoutAll', (req,res)=>{
     try{
-
+        res.sendFile(path.join(__dirname,'../html/logoutAll.html'))
     }catch(e){
         res.status(500).send(e)
     }
@@ -80,7 +81,7 @@ userRouter.post('/user/logoutAll', auth, async (req, res) => {
     try {
         req.user.tokens = []
         await req.user.save()
-        res.send()
+        res.send('User is logged out from all the devices!')
     } catch (e) {
         res.status(500).send()
     }
@@ -90,15 +91,15 @@ userRouter.get('/user/me', auth, async (req, res) => {
     res.send(req.user)
 })
 
-userRouter.get('/updateUser', (req,res)=>{
+userRouter.get('/user/update', (req,res)=>{
     try{
-
+        res.sendFile(path.join(__dirname,'../html/updateUser.html'))
     }catch(e){
         res.status(500).send(e)
     }
 })
 
-userRouter.patch('/user/me', auth, async (req, res) => {
+userRouter.patch('/user/update', auth, async (req, res) => {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['name', 'email', 'password', 'age']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
@@ -108,9 +109,9 @@ userRouter.patch('/user/me', auth, async (req, res) => {
     }
 
     try {
-        updates.forEach((update) => req.user[update] = req.body[update])
+        updates.forEach((update) => req.body[update] == "" ? null :req.user[update] = req.body[update])
         await req.user.save()
-        res.send(req.user)
+        res.send()
     } catch (e) {
         res.status(400).send(e)
     }
@@ -146,7 +147,7 @@ const avatar = multer({
 
 userRouter.get('/user/uploadAvatar', (req,res)=>{
     try{
-
+        res.sendFile(path.join(__dirname,'../html/uploadAvatar.html'))
     }catch(e){
         res.status(500).send(e)
     }
@@ -163,9 +164,9 @@ userRouter.post('/user/me/avatar', auth, avatar.single('avatar'), async (req,res
     res.status(400).send({error: error.message})
 })
 
-userRouter.get('/delete/Avatar', (req,res) => {
+userRouter.get('/user/delete/Avatar', (req,res) => {
     try{
-
+        res.sendFile(path.join(__dirname,'../html/deleteAvatar.html'))
     }catch(e){
         res.status(500).send(e)
     }
@@ -178,15 +179,15 @@ userRouter.delete('/user/me/avatar', auth, async (req, res) => {
     res.status(200).send("Your Avatar is now deleted")
 })
 
-userRouter.get('/delete/User', (req,res)=>{
+userRouter.get('/user/delete', (req,res)=>{
     try{
-
+        res.sendFile(path.join(__dirname,'../html/deleteUser.html'))
     }catch(e){
         res.status(500).send(e)
     }
 })
 
-userRouter.delete('/user/me', auth, async (req, res) => {
+userRouter.delete('/user/delete', auth, async (req, res) => {
     try {
         await req.user.remove()
         res.send(req.user)
