@@ -8,19 +8,32 @@ const auth = require('../middleware/auth')
 const multer = require('multer')
 
 userRouter.get('/addUser',(req, res) => {
-    res.sendFile(path.join(__dirname,'../html/addUser.html'))
+    try{
+        res.sendFile(path.join(__dirname,'../html/addUser.html'))
+    }catch(e){
+        res.status(500).send({error: 'Something went wrong!'})
+    }
 })
 
 userRouter.post('/user', async (req, res) => {
-    console.log(req.body)
     const user = new User(req.body)
 
     try {
         await user.save()
         const token = await user.generateAuthToken()
+        res.cookie('token', token)
+        //res.redirect('/user/me')
         res.status(201).send({ user, token })
     } catch (e) {
-        res.status(400).send(e)
+        res.status(500).send(e)
+    }
+})
+
+userRouter.get('/user/login', (req,res) => {
+    try{
+
+    }catch(e){
+        res.status(500).send(e)
     }
 })
 
@@ -31,6 +44,14 @@ userRouter.post('/user/login', async (req, res) => {
         res.send({ user, token })
     } catch (e) {
         res.status(400).send()
+    }
+})
+
+userRouter.get('/user/logout', (req,res) => {
+    try{
+
+    }catch(e){
+        res.status(500).send(e)
     }
 })
 
@@ -47,6 +68,14 @@ userRouter.post('/user/logout', auth, async (req, res) => {
     }
 })
 
+userRouter.get('/user/logoutAll', (req,res)=>{
+    try{
+
+    }catch(e){
+        res.status(500).send(e)
+    }
+})
+
 userRouter.post('/user/logoutAll', auth, async (req, res) => {
     try {
         req.user.tokens = []
@@ -59,6 +88,14 @@ userRouter.post('/user/logoutAll', auth, async (req, res) => {
 
 userRouter.get('/user/me', auth, async (req, res) => {
     res.send(req.user)
+})
+
+userRouter.get('/updateUser', (req,res)=>{
+    try{
+
+    }catch(e){
+        res.status(500).send(e)
+    }
 })
 
 userRouter.patch('/user/me', auth, async (req, res) => {
@@ -107,6 +144,14 @@ const avatar = multer({
     }
 })
 
+userRouter.get('/user/uploadAvatar', (req,res)=>{
+    try{
+
+    }catch(e){
+        res.status(500).send(e)
+    }
+})
+
 userRouter.post('/user/me/avatar', auth, avatar.single('avatar'), async (req,res) => {
     // req.file.buffer, holds the binary data for profile picture 
 
@@ -118,11 +163,27 @@ userRouter.post('/user/me/avatar', auth, avatar.single('avatar'), async (req,res
     res.status(400).send({error: error.message})
 })
 
+userRouter.get('/delete/Avatar', (req,res) => {
+    try{
+
+    }catch(e){
+        res.status(500).send(e)
+    }
+})
+
 userRouter.delete('/user/me/avatar', auth, async (req, res) => {
     req.user.avatar = undefined
     await req.user.save()
 
     res.status(200).send("Your Avatar is now deleted")
+})
+
+userRouter.get('/delete/User', (req,res)=>{
+    try{
+
+    }catch(e){
+        res.status(500).send(e)
+    }
 })
 
 userRouter.delete('/user/me', auth, async (req, res) => {
