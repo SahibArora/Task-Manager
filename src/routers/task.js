@@ -12,6 +12,14 @@ const taskRouter = new express.Router()
     }
 })*/
 
+taskRouter.get('/task/add', auth, (req,res)=>{
+    try{
+        res.render('addTask',{})
+    }catch(e){
+
+    }
+})
+
 taskRouter.post('/task/add', auth, async (req,res)=>{
 
     // ------------ UPDATED TO USE ASYNC AND AWAIT
@@ -23,7 +31,7 @@ taskRouter.post('/task/add', auth, async (req,res)=>{
 
     try{
         await task.save()
-        res.status(201).send(task)
+        res.render('welcomeUser',req.user)
     }catch(e){
         res.status(400).send(e)
     }
@@ -121,11 +129,12 @@ taskRouter.get('/tasks/:id', auth, async (req,res)=>{
 */
 })
 
-taskRouter.get('/task/add', (req, res) => {
+
+taskRouter.get('/task/add', auth, (req,res)=>{
     try{
-        res.sendFile(path.join(__dirname,'../html/deleteUser.html'))
+        
     }catch(e){
-        res.status(500).send(e)
+        
     }
 })
 
