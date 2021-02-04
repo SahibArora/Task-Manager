@@ -18,4 +18,4 @@ This API will allow any user to perform following actions -
 
 An Auth middleware has been written to check for authentication, So, to use any of the features above, first create the user.
 
-Access Application @ https://task-manager-api-sahib.herokuapp.com
+Access dummy front-end @ https://task-manager-api-sahib.herokuapp.com
